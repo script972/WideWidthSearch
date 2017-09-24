@@ -10,10 +10,13 @@ public class Room implements Cloneable{
     int [][] matrix;
     EmptyField zero;
 
+    private int value;
+
     public Room(int[][] matrix, EmptyField zero) {
         this.matrix = matrix;
         this.zero=zero;
     }
+
 
     public Room() {
     }
@@ -71,6 +74,14 @@ public class Room implements Cloneable{
 
     public EmptyField getZeroField() {
         return zero;
+    }
+
+    public int getValue() {
+        return value;
+    }
+
+    public void setValue(int value) {
+        this.value = value;
     }
 
     public boolean setElemetMatrix(int x, int y, int value){

@@ -1,13 +1,9 @@
 import bean.EmptyField;
 import bean.Room;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
-
 public class Runners {
 
-    public static Rules game;
+    public static RulesWidth game;
 
 
 
@@ -24,7 +20,7 @@ public class Runners {
 
 
 
-        game=new Rules(mock(),mockFinish());
+        game=new RulesWidth(mock(),mockFinish());
         game.run();
 
 

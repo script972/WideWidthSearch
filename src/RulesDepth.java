@@ -4,7 +4,7 @@ import bean.Room;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Rules {
+public class RulesDepth {
 
     Room room;
     Room finish;
@@ -12,7 +12,7 @@ public class Rules {
     List<Room> closed=new ArrayList<>();
     int counter;
 
-    public Rules(Room room, Room finish) {
+    public RulesDepth(Room room, Room finish) {
         this.room=room;
         this.finish=finish;
         open.add(room);
@@ -48,12 +48,15 @@ public class Rules {
 
             Room temp = room;
             //temp=mock();
+            closed.add(room);
+
 
             System.out.println("Start Moved " + counter);
             System.out.println("До шага влево");
             try {
                 temp =  room.clone();
-                leftStep(temp);
+                temp=leftStep(temp);
+                doingCheck(temp);
                 System.out.println("ROOM ");
                 room.print();
                 System.out.println("---------");
@@ -63,7 +66,9 @@ public class Rules {
             System.out.println("До шага вправо");
             try {
                 temp =  room.clone();
-                rightStep(temp);
+                temp=rightStep(temp);
+                doingCheck(temp);
+
                 System.out.println("ROOM ");
                 room.print();
                 System.out.println("---------");
@@ -73,7 +78,9 @@ public class Rules {
             System.out.println("До шага вверх");
             try {
                 temp =room.clone();
-                upStep(temp);
+                temp=upStep(temp);
+                doingCheck(temp);
+
             } catch (CloneNotSupportedException e) {
                 e.printStackTrace();
             }
@@ -81,110 +88,140 @@ public class Rules {
 
             try {
                 temp =  room.clone();
-                downStep(temp);
+                temp=downStep(temp);
+                doingCheck(temp);
             } catch (CloneNotSupportedException e) {
                 e.printStackTrace();
             }
             System.out.println("FinishedMoved " + counter);
-            closed.add(room);
         }
 
     }
 
+    //крок 5
+    private void doingCheck(Room temp) {
+        boolean consist=false;
+        if(temp==null)
+            return;
+        for (Room obj :
+                open) {
+            if (obj.equals(temp)) {
+                open.remove(temp);
+                consist=true;
+            }
+        }
+
+        for (Room obj :
+                closed) {
+            if (obj.equals(temp)) {
+                closed.remove(obj);
+                consist=true;
+            }
+        }
+        if(!consist)
+            open.add(0, temp);
+    }
+
     //check
-    private void downStep(Room temp) {
+    private Room downStep(Room temp) {
         temp.print();
         int valueTemp=0;
-       // System.out.println("down Start");
-       // temp.print();
+        // System.out.println("down Start");
+        // temp.print();
         if(temp.getZeroField().getX()<temp.getMatrix().length-1){
             valueTemp=temp.getMatrix()[temp.getZeroField().getX()+1][temp.getZeroField().getY()];
-          //  System.out.println("value Temp="+valueTemp);
+            //  System.out.println("value Temp="+valueTemp);
             temp.setElemetMatrix(temp.getZeroField().getX(), temp.getZeroField().getY(), valueTemp);
             System.out.println(temp.setElemetMatrix(temp.getZeroField().getX()+1, temp.getZeroField().getY(), 0));
             temp.setZero(new EmptyField(temp.getZeroField().getX()+1, temp.getZeroField().getY()));
-          //  System.out.println("Шаг down");
+            //  System.out.println("Шаг down");
             System.out.println("После шага вниз");
             temp.print();
-          //  System.out.println("Значение 0 "+temp.getZero());
-            markAction(temp);
+            //  System.out.println("Значение 0 "+temp.getZero());
+            //markAction(temp);
+            return temp;
         }
         System.out.println(temp.getZero());
 
 
+        return null;
     }
 
     //Check
-    private void upStep(Room temp) {
+    private Room upStep(Room temp) {
         temp.print();
         int valueTemp=0;
-      //  System.out.println("Up Start");
-       // temp.print();
-      //  System.out.println("figak="+temp.getZeroField().getY());
-       // System.out.println("figak="+temp.getMatrix()[0].length);
+        //  System.out.println("Up Start");
+        // temp.print();
+        //  System.out.println("figak="+temp.getZeroField().getY());
+        // System.out.println("figak="+temp.getMatrix()[0].length);
         if(temp.getZeroField().getX()>0){
-           // System.out.println("Input");
+            // System.out.println("Input");
             valueTemp=temp.getMatrix()[temp.getZeroField().getX()-1][temp.getZeroField().getY()];
-           // System.out.println("value Temp="+valueTemp);
+            // System.out.println("value Temp="+valueTemp);
             temp.setElemetMatrix(temp.getZeroField().getX(), temp.getZeroField().getY(), valueTemp);
             System.out.println(temp.setElemetMatrix(temp.getZeroField().getX()-1, temp.getZeroField().getY(), 0));
             temp.setZero(new EmptyField(temp.getZeroField().getX()-1, temp.getZeroField().getY()));
-          //  System.out.println("Шаг Up");
+            //  System.out.println("Шаг Up");
             System.out.println("После шага вверх");
 
             temp.print();
-            markAction(temp);
-
+            //markAction(temp);
+            return temp;
             //   System.out.println("Значение 0 "+temp.getZero());
         }
         System.out.println(temp.getZero());
 
+        return null;
     }
 
     //Check
-    private void rightStep(Room tempRight) {
+    private Room rightStep(Room tempRight) {
         tempRight.print();
         int valueTemp=0;
-       // System.out.println("Rigth Start");
-      //  tempRight.print();
+        // System.out.println("Rigth Start");
+        //  tempRight.print();
         if(tempRight.getZeroField().getY()<tempRight.getMatrix()[0].length-1){
-           // System.out.println("Input");
+            // System.out.println("Input");
             valueTemp=tempRight.getMatrix()[tempRight.getZeroField().getX()][tempRight.getZeroField().getY()+1];
-           // System.out.println("value Temp="+valueTemp);
+            // System.out.println("value Temp="+valueTemp);
             tempRight.setElemetMatrix(tempRight.getZeroField().getX(), tempRight.getZeroField().getY(), valueTemp);
             System.out.println(tempRight.setElemetMatrix(tempRight.getZeroField().getX(), tempRight.getZeroField().getY()+1, 0));
             tempRight.setZero(new EmptyField(tempRight.getZeroField().getX(), tempRight.getZeroField().getY()+1));
-           // System.out.println("Шаг вправо");
+            // System.out.println("Шаг вправо");
             System.out.println("После шага вправо");
 
             tempRight.print();
-            markAction(tempRight);
-          //  System.out.println("Значение 0 "+tempRight.getZero());
+            return tempRight;
+           // markAction(tempRight);
+            //  System.out.println("Значение 0 "+tempRight.getZero());
         }
-        System.out.println(tempRight.getZero());
+        //System.out.println(tempRight.getZero());
 
 
+        return null;
     }
 
     //check
-    private void leftStep(Room temp) {
+    private Room leftStep(Room temp) {
         temp.print();
         int valueTemp=0;
-       // temp.print();
+        // temp.print();
         if(temp.getZeroField().getY()>0){
             System.out.println("Input");
             valueTemp=temp.getMatrix()[temp.getZeroField().getX()][temp.getZeroField().getY()-1];
-           // System.out.println("value Temp="+valueTemp);
+            // System.out.println("value Temp="+valueTemp);
             temp.setElemetMatrix(temp.getZeroField().getX(), temp.getZeroField().getY(), valueTemp);
             temp.setElemetMatrix(temp.getZeroField().getX(), temp.getZeroField().getY()-1, 0);
             temp.setZero(new EmptyField(temp.getZeroField().getX(), temp.getZeroField().getY()-1));
             System.out.println("После шага влево");
             temp.print();
-            markAction(temp);
+           // markAction(temp);
+            return temp;
 
 
         }
-        System.out.println(temp.getZero());
+        return null;
 
 
     }
@@ -243,9 +280,4 @@ public class Rules {
 
         return new Room(arr, new EmptyField(0,0));
     }
-
-
-
-
-
 }
