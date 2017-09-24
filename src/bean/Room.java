@@ -33,8 +33,19 @@ public class Room implements Cloneable{
         if (o == null || getClass() != o.getClass()) return false;
 
         Room room = (Room) o;
+        for (int i = 0; i < room.getMatrix().length; i++) {
+            for (int j = 0; j < room.getMatrix()[0].length; j++) {
+                if(room.getMatrix()[i][j]!=matrix[i][j])
+                    return false;
+            }
+        }
+        if(room.getZeroField().getX()!=getZeroField().getX())
+            return false;
+        if(room.getZeroField().getY()!=getZeroField().getY())
+            return false;
 
-        return Arrays.deepEquals(matrix, room.matrix);
+
+        return true ;
     }
 
     @Override
@@ -72,7 +83,16 @@ public class Room implements Cloneable{
     }
 
     public Room clone()throws CloneNotSupportedException{
-        return (Room)super.clone();
+        int [][] copy=new int[matrix.length][matrix[0].length];
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[0].length; j++) {
+                copy[i][j]=matrix[i][j];
+            }
+        }
+        Room room=new Room(copy, getZeroField());
+
+
+        return room;
     }
 
 

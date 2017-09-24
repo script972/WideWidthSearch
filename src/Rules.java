@@ -16,6 +16,8 @@ public class Rules {
         this.room=room;
         this.finish=finish;
         open.add(room);
+        System.out.println("Нужно для выиграша");
+        finish.print();
     }
 
 
@@ -38,13 +40,11 @@ public class Rules {
                 e.printStackTrace();
             }
             open.remove(0);
-            //room.print();
 
-
-            if (room.equals(finish)) {
-                System.out.println("Game Finish on counter=" + counter);
+            if(checkWin(room)){
                 return;
             }
+
 
             Room temp = room;
             //temp=mock();
@@ -219,9 +219,12 @@ public class Rules {
         }
     }
 
-    private void checkWin(){
-
-
+    private boolean checkWin(Room room) {
+        if (room.equals(finish)) {
+            System.out.println("Game Finish on counter=" + counter);
+            return true;
+        }
+        return false;
     }
 
     public Room mock(){
